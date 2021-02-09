@@ -4,14 +4,15 @@ const text = document.querySelector('.isValidate')
 
 formulario.addEventListener('submit', (e) => {
     e.preventDefault()
-    if (isNaN(formatCedula(textCedula.value))) {
+    let cedula = formatCedula(textCedula.value)
+    if (isNaN(cedula)) {
         message(`Lo que digito no es un número`, `alert-danger`)
-    } else if (formatCedula(textCedula.value) === '') {
+    } else if (cedula === '') {
         message(`El campo no puede estar vacio`, `alert-danger`)
     } else {
-        validateCedula(formatCedula(textCedula.value)) ?
-            message(`La Cédula ${formatCedula(textCedula.value)} es valida`, `alert-success`) :
-            message(`La Cédula ${formatCedula(textCedula.value)} no es valida`, `alert-danger`)
+        validateCedula(cedula) ?
+            message(`La Cédula ${cedula} es valida`, `alert-success`) :
+            message(`La Cédula ${cedula} no es valida`, `alert-danger`)
     }
 })
 
@@ -25,17 +26,16 @@ const validateLongitud = (cedula) => {
 }
 
 const getVerificador = (cedula) => {
-    let sumDigitos = 0;
-    let concatenateDigitos = "";
+    let sumDigitos, ultimoDigito, decenaMasCercana, concatenateDigitos = ''
     const digitosCedulas = Array.from(cedula)
-    const DigitosMultiplicadores = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+    const DigitosMultiplicadores = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2]
     for (let i = 0; i < 10; i++) {
         let digito = digitosCedulas[i] * DigitosMultiplicadores[i]
         concatenateDigitos += digito
     }
     sumDigitos = getSumDigitos(concatenateDigitos);
-    let ultimoDigito = getUltimoDigito(sumDigitos.toString())
-    let decenaMasCercana = sumDigitos + (10 - ultimoDigito)
+    ultimoDigito = getUltimoDigito(sumDigitos.toString())
+    decenaMasCercana = sumDigitos + (10 - ultimoDigito)
     return Math.abs(sumDigitos - decenaMasCercana)
 }
 
@@ -50,6 +50,15 @@ const getSumDigitos = (listDigitos) => {
 
 const getUltimoDigito = (text) => {
     return text.charAt(text.length - 1)
+}
+
+const formatCedula = (cedula) => {
+    let newCedula;
+    for(let i=0; i<=cedula.length;i++){
+        cedula = cedula.replace('-','');
+        newCedula = cedula
+    }
+    return newCedula
 }
 
 const message = (textMessage, typeClassAlert) => {
@@ -73,14 +82,4 @@ const addClassAlert = (typeClassAlert) => {
     } else {
         text.classList.add(typeClassAlert)
     }
-}
-
-
-const formatCedula = (cedula) => {
-    let newCedula;
-    for(let i=0; i<=cedula.length;i++){
-        cedula = cedula.replace('-','');
-        newCedula = cedula
-    }
-    return newCedula
 }
