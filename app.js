@@ -5,9 +5,9 @@ const text = document.querySelector('.isValidate')
 formulario.addEventListener('submit', (e) => {
     e.preventDefault()
     let cedula = formatCedula(textCedula.value)
-    if (isNaN(cedula)) {
+    if(isNaN(cedula)) {
         message(`Lo que digito no es un número`, `alert-danger`)
-    } else if (cedula === '') {
+    }else if (cedula === '') {
         message(`El campo no puede estar vacio`, `alert-danger`)
     } else {
         validateCedula(cedula) ?
